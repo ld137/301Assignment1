@@ -1,6 +1,8 @@
+import java.util.Arrays;
+
 public class heapsort {
     public static void main(String[] args) {
-        heap Heap = new heap(31);
+        MyMinHeap heap = new MyMinHeap(31);
         heap.insert("The");
         heap.print();
         heap.insert("Quick");
@@ -18,6 +20,27 @@ public class heapsort {
         heap.insert("Lazy");
         heap.print();
         heap.insert("Dog");
+        heap.print();
+        String removed = heap.remove();
+        System.out.println("Removed: " + removed);
+        heap.print();
+        removed = heap.remove();
+        System.out.println("Removed: " + removed);
+        heap.print();
+        removed = heap.remove();
+        System.out.println("Removed: " + removed);
+        heap.print();
+        removed = heap.remove();
+        System.out.println("Removed: " + removed);
+        heap.print();
+        removed = heap.remove();
+        System.out.println("Removed: " + removed);
+        heap.print();
+        removed = heap.remove();
+        System.out.println("Removed: " + removed);
+        heap.print();
+        removed = heap.remove();
+        System.out.println("Removed: " + removed);
         heap.print();
     }
 }
