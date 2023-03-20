@@ -21,26 +21,15 @@ public class heapsort {
         heap.print();
         heap.insert("Dog");
         heap.print();
+        System.out.println("-----------------------");
+        System.out.println("Replacing 'Lazy' with 'Incompentent'");
+        heap.replace("Lazy", "Incompentent");
+        heap.print();
+        System.out.println("-----------------------");
         String removed = heap.remove();
-        System.out.println("Removed: " + removed);
-        heap.print();
-        removed = heap.remove();
-        System.out.println("Removed: " + removed);
-        heap.print();
-        removed = heap.remove();
-        System.out.println("Removed: " + removed);
-        heap.print();
-        removed = heap.remove();
-        System.out.println("Removed: " + removed);
-        heap.print();
-        removed = heap.remove();
-        System.out.println("Removed: " + removed);
-        heap.print();
-        removed = heap.remove();
-        System.out.println("Removed: " + removed);
-        heap.print();
-        removed = heap.remove();
-        System.out.println("Removed: " + removed);
-        heap.print();
+        while(removed != null){
+            System.out.println(removed);
+            removed = heap.remove();
+        }
     }
 }
