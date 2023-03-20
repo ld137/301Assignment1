@@ -66,7 +66,6 @@ public class MyMinHeap {
      * Inserts the specified value into the heap.
      * 
      * @param value the value to insert
-     * @throws IllegalStateException if the heap is full
      */
     public void insert(String value) {
         if (size >= maxsize) {

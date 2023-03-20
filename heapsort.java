@@ -2,6 +2,10 @@ import java.util.Arrays;
 
 public class heapsort {
     public static void main(String[] args) {
+        basicTest();
+    }
+
+    public static void basicTest(){
         MyMinHeap heap = new MyMinHeap(31);
         heap.insert("The");
         heap.print();
