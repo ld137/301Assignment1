@@ -67,9 +67,10 @@ public class MyMinHeap {
      * 
      * @param value the value to insert
      */
-    public void insert(String value) {
+    public boolean insert(String value) {
         if (size >= maxsize) {
             System.err.println("Heap is full");
+            return false;
         }
         size++;
         Heap[size] = value;
@@ -78,6 +79,7 @@ public class MyMinHeap {
             swap(current, parent(current));
             current = parent(current);
         }
+        return true;
     }
 
     /**
