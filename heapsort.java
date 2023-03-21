@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class heapsort {
     public static void main(String[] args) {
         basicTest();
@@ -35,5 +33,9 @@ public class heapsort {
             System.out.println(removed);
             removed = heap.remove();
         }
+    }
+
+    public void CreateRuns(int length){
+
     }
 }
