@@ -8,41 +8,15 @@ import java.nio.file.Paths;
 
 public class heapsort {
     public static void main(String[] args) {
-         CreateRuns(30);
-        // basicTest();
-        mergeDirectory("Temp");
+        //CreateRuns(30);
+         basicTest();
+        //mergeDirectory("Temp");
     }
 
     public static void basicTest() {
-        MyMinHeap heap = new MyMinHeap(31);
-        heap.insert("The");
-        heap.print();
-        heap.insert("Quick");
-        heap.print();
-        heap.insert("Brown");
-        heap.print();
-        heap.insert("Fox");
-        heap.print();
-        heap.insert("Jumps");
-        heap.print();
-        heap.insert("Over");
-        heap.print();
-        heap.insert("A");
-        heap.print();
-        heap.insert("Lazy");
-        heap.print();
-        heap.insert("Dog");
-        heap.print();
-        System.out.println("-----------------------");
-        System.out.println("Replacing 'Lazy' with 'Incompentent'");
-        heap.replace("Lazy", "Incompentent");
-        heap.print();
-        System.out.println("-----------------------");
-        String removed = heap.remove();
-        while (removed != null) {
-            System.out.println(removed);
-            removed = heap.remove();
-        }
+
+        // DistributeRuns runs = new DistributeRuns(2, "Temp", "Merge");
+        // runs.Distribute();
     }
 
     public static void CreateRuns(int length) {
@@ -130,11 +104,29 @@ public class heapsort {
                     fileCount++;
                 if (fileCount >= 2) {
                     mergeFiles(tempFiles[0], tempFiles[1], tempFileName + tempFileCount + tempFileextension);
+
+                    File file1OBJ = new File(tempFiles[0]);
+                    File file2OBJ = new File(tempFiles[1]);
+                    
+                    if(file1OBJ.delete()){
+                        System.err.println("Deleted file 1");
+                    }
+                    else{
+                        System.err.println("Failed to delete file 1");
+                    }
+                    if(file2OBJ.delete()){
+                        System.err.println("Deleted file 2");
+                    }
+                    else{
+                        System.err.println("Failed to delete file 2");
+                    }
+
                     fileCount = 0;
                     tempFileCount++;
                 }
             }
-            if ((fileCounter % 2) == 0) {
+            //if ((fileCounter % 2) == 0) {
+            if ((directoryListing.length % 2) == 1) {
                 System.err.println("Copying last file");
                 try {
                     Files.copy(Paths.get(tempFiles[0]),
@@ -143,7 +135,6 @@ public class heapsort {
                     System.err.println("Failed to copy the last file or something?");
                 }
             }
-
         }
     }
 
@@ -156,7 +147,7 @@ public class heapsort {
             Scanner file2Reader = new Scanner(file2OBJ);
             String line1 = readLine(file1Reader);
             String line2 = readLine(file2Reader);
-            ;
+            //;
 
             String tmpFileFolder = "Merge";
             MyMinHeap mergeHeap = new MyMinHeap(31);
@@ -207,8 +198,10 @@ public class heapsort {
 
             }
             createFile(mergeHeap, outputFile, tmpFileFolder);
+            // Delete the temporary files
             file1Reader.close();
             file2Reader.close();
+
         } catch (FileNotFoundException e) {
             System.err.println("An error occurred.");
             e.printStackTrace();
@@ -226,4 +219,6 @@ public class heapsort {
             return null;
         }
     }
+
+
 }
