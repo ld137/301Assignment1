@@ -6,46 +6,40 @@ public class MergeRuns {
     public static void main(String[] args) {
    //     if (args.length == 0){ // change to args.length == 1 when done testing
 
-            // DistributeRuns runs = new DistributeRuns(Integer.parseInt(args[0]), "Temp", "Merge");
             DistributeRuns runs = new DistributeRuns(2, "Temp", "Merge");
-            // DistributeRuns runBack = new DistributeRuns(2, "Merge2", "Temp");
             Integer mergeCount = 0;
 
 
             // while(!runs.isEmpty){
             while(!runs.isEmpty){
+                // Grabs two files from temp folder
                 runs.Distribute();
-                heapsort.mergeDirectory(runs.targerFolderPath);
 
-                // File tempMerge = new File("Merge/merge0.txt");
-                // tempMerge.renameTo(new File("Merge/temp.txt"));
+                // If one of the files is names merge0 rename it because it causes errors
+                File tempMerge = new File("Merge/merge0.txt");
+                if(tempMerge.exists()){
+                    tempMerge.renameTo(new File("Merge/Merge.txt"));
+                }
 
-                File[] mergeFiles = new File(runs.targerFolderPath).listFiles();
+                // If there is two files in merge then merge them
+                File[] mergeFiles = new File(runs.targetFolderPath).listFiles();
+
+                if(mergeFiles.length == 2){
+                    heapsort.mergeDirectory(runs.targetFolderPath);
+                }
+
+                
+                
+                // Move the files in the Merge folder to the Merge2 folder
                 for (File file : mergeFiles) {
                     file.renameTo(new File("Merge2" + file.separator + "merge" + mergeCount + ".txt"));
                 }
+                // Increment the merge count
                 mergeCount++;
+
+               
             }
-                // mergeCount = 0;
-                // while(!runBack.isEmpty){
-                //     runBack.Distribute();
-                //     heapsort.mergeDirectory(runBack.targerFolderPath);
 
-                //     // File tempMerge = new File("Merge/merge0.txt");
-                //     // tempMerge.renameTo(new File("Merge/temp.txt"));
-
-                //     File[] mergeFilesBack = new File(runBack.targerFolderPath).listFiles();
-                //     for (File file : mergeFilesBack) {
-                //         file.renameTo(new File("Merge2" + file.separator + "merge" + mergeCount + ".txt"));
-                //     }
-                //     mergeCount++;
-                // }
-            // }
-            // runs = new DistributeRuns(Integer.parseInt(args[0]), "Merge", "Sort");
-            // runs = new DistributeRuns(2, "Merge", "Sort");
-            // while(!runs.isEmpty){
-            //     runs.Distribute();
-            // }
         // }
         // else{
         //     System.err.println("Insufficient arguments");
