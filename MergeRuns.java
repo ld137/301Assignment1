@@ -5,43 +5,57 @@ public class MergeRuns {
 
     public static void main(String[] args) {
    //     if (args.length == 0){ // change to args.length == 1 when done testing
-
-            DistributeRuns runs = new DistributeRuns(2, "Temp", "Merge");
             Integer mergeCount = 0;
+            boolean sorted = false;
 
 
-            // while(!runs.isEmpty){
-            while(!runs.isEmpty){
-                // Grabs two files from temp folder
-                runs.Distribute();
+            while(!sorted){
+                DistributeRuns runs = new DistributeRuns(2, "Temp", "Merge");
+                while(!runs.isEmpty){
+                    // Grabs two files from temp folder
+                    runs.Distribute();
 
-                // If one of the files is names merge0 rename it because it causes errors
-                File tempMerge = new File("Merge/merge0.txt");
-                if(tempMerge.exists()){
-                    tempMerge.renameTo(new File("Merge/Merge.txt"));
+                    // If one of the files is names merge0 rename it because it causes errors
+                    File tempMerge = new File("Merge/merge0.txt");
+                    if(tempMerge.exists()){
+                        tempMerge.renameTo(new File("Merge/Merge.txt"));
+                    }
+
+                    // If there is two files in merge then merge them
+                    File[] mergeFiles = new File(runs.targetFolderPath).listFiles();
+
+                    if(mergeFiles.length == 2){
+                        heapsort.mergeDirectory(runs.targetFolderPath);
+                    }
+
+                    // Reset mergeFiles after the merging
+                    mergeFiles = new File(runs.targetFolderPath).listFiles();
+
+                    // Move the files in the Merge folder to the Merge2 folder
+                    for (File file : mergeFiles) {
+                        file.renameTo(new File("Merge2" + file.separator + "merge" + mergeCount + ".txt"));
+                    }
+                    // Increment the merge count
+                    mergeCount++;
                 }
 
-                // If there is two files in merge then merge them
-                File[] mergeFiles = new File(runs.targetFolderPath).listFiles();
-
-                if(mergeFiles.length == 2){
-                    heapsort.mergeDirectory(runs.targetFolderPath);
-                }
-
+                // Count how many files are left after merging
+                File[] returnFiles = new File("Merge2").listFiles();
                 
-                
-                // Move the files in the Merge folder to the Merge2 folder
-                for (File file : mergeFiles) {
-                    file.renameTo(new File("Merge2" + file.separator + "merge" + mergeCount + ".txt"));
+                // If there are more than 1 files left then put them back into temp to merge again
+                if(returnFiles.length > 1){
+                    for (File file : returnFiles) {
+                    file.renameTo(new File("Temp" + file.separator + file.getName()));
+                    }
                 }
-                // Increment the merge count
-                mergeCount++;
-
-               
-            }
-
-        // }
-        // else{
+                // If there is only 1 file left then put it in the sorted folder (For this to finish running it takes about 1 minute)
+                else if(returnFiles.length == 1){
+                    returnFiles[0].renameTo(new File("Sorted" + returnFiles[0].separator + "Sorted.txt"));
+                    sorted = true;
+                }
+                mergeCount = 0;
+            } // All code below this is for setting arguments
+        // else{ 
         //     System.err.println("Insufficient arguments");
         //     System.exit(1);
         // }
