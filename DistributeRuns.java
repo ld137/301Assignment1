@@ -12,9 +12,11 @@ public class DistributeRuns {
     public boolean isEmpty;
     List<File> files = new ArrayList<>();
     File currentFile = null;
+    int kFiles = 2;
 
     public DistributeRuns(int count) {
         System.err.println("Started Distribute Runs");
+        kFiles = count > 1 ? count : 2;
     }
 
     public File distribute(){
@@ -49,7 +51,7 @@ public class DistributeRuns {
                     }
                 }
             }
-            if (files.size() == 2){
+            if (files.size() == kFiles){
                 File mergedFile = mergeFiles(files);
                 files = new ArrayList<>();
                 files.add(mergedFile);
@@ -130,6 +132,16 @@ public class DistributeRuns {
         try {
             MyMinHeap mergeHeap = new MyMinHeap(31);
             File outputFile = createTemp("Merge");
+            List<Scanner> scanners = new ArrayList<>();
+            List<String> lines = new ArrayList<>();
+            for(File file : files){
+                scanners.add(new Scanner(file));
+            }
+            for(Scanner scan : scanners){
+                lines.add(readLine(scan));
+            }
+
+
             File file1OBJ = files.get(0);
             File file2OBJ = files.get(1);
             System.err.println("Merging: " + file1OBJ.getName() + " and " + file2OBJ.getName() + " into " + outputFile.getName());
@@ -137,8 +149,28 @@ public class DistributeRuns {
             Scanner file2Reader = new Scanner(file2OBJ);
             String line1 = readLine(file1Reader);
             String line2 = readLine(file2Reader);
+            boolean hasNonNull = lines.stream().anyMatch(Objects::nonNull);
+            while (hasNonNull = lines.stream().anyMatch(Objects::nonNull)) {
 
-            while (line1 != null || line2 != null) {
+                //Loop over lines array, while maintaining the index and the smallest line of said index
+                String smallest = null;
+                int index = 0;
+                for(String line : lines){
+                    if (line.compareTo(smallest) < 0 ){
+                        smallest = line;
+                    }
+                    index++;
+                }
+                lines.set(index, readLine(scanners.get(index)));
+                Boolean inserted = mergeHeap.insert(smallest);
+                if (!inserted){
+                    writeHeapToFile(outputFile, mergeHeap);
+                    mergeHeap = new MyMinHeap(31);
+                    mergeHeap.insert(smallest);
+                }
+                
+
+
                 if (line1 == null) {
                     // just write line 2
                     Boolean inserted = mergeHeap.insert(line2);
