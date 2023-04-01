@@ -14,6 +14,8 @@ public class MyMinHeap {
     // The maximum size of the heap.
     private int maxsize;
 
+    private boolean empty = true;
+
     /**
      * 
      * Constructs a new MyMinHeap object with the specified maximum size.
@@ -69,7 +71,7 @@ public class MyMinHeap {
      */
     public boolean insert(String value) {
         if (size >= maxsize) {
-            System.err.println("Heap is full");
+            //System.err.println("Heap is full");
             return false;
         }
         size++;
@@ -79,6 +81,7 @@ public class MyMinHeap {
             swap(current, parent(current));
             current = parent(current);
         }
+        empty = false;
         return true;
     }
 
@@ -90,7 +93,8 @@ public class MyMinHeap {
      */
     public String remove() {
         if (size <= 0) {
-            System.err.println("Heap is empty");
+            //System.err.println("Heap is empty");
+            empty = true;
             return null;
         }
         String min = Heap[1];
@@ -196,5 +200,9 @@ public class MyMinHeap {
                             + " RIGHT CHILD :" + Heap[2 * i + 1]);
             System.out.println();
         }
+    }
+
+    public boolean isEmpty(){
+        return empty;
     }
 }

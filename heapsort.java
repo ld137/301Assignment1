@@ -3,7 +3,6 @@ import java.nio.file.Files;
 import java.util.NoSuchElementException;
 import java.util.Scanner; // Import the Scanner class to read text files
 import static java.nio.file.StandardCopyOption.*;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class heapsort {
@@ -213,9 +212,6 @@ public class heapsort {
         try {
             return reader.nextLine();
         } catch (NoSuchElementException ex) {
-
-            // System.err.println("An error occurred.");
-            // ex.printStackTrace();
             return null;
         }
     }
