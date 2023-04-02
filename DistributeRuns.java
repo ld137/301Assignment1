@@ -8,7 +8,6 @@ import java.io.*;
 import java.util.*;
 import java.util.Scanner;
 
-// Distribute the stream input into files and returns the final file
 public class DistributeRuns {
     // Declare variables
     public File originalFolder;
@@ -26,7 +25,7 @@ public class DistributeRuns {
         kFiles = count > 1 ? count : 2;
     }
 
-      
+    // Distribute the stream input into files and returns the final file
     public File distribute() {
         InputStreamReader isr = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(isr);
