@@ -7,8 +7,21 @@ public class MergeRuns {
 
     public static void main(String[] args) {
         try {
-
-            DistributeRuns DR = new DistributeRuns(0);
+            long start = System.currentTimeMillis();
+            int runsCount = 2;
+            try {
+                if (args.length > 0) {
+                    runsCount = Integer.parseInt(args[0]) > 10 ? 10 : (Integer.parseInt(args[0]) < 1 ? 2 : Integer.parseInt(args[0]));// Saves the specified
+                                                                                               // heapsize into heapSize int
+                } else {
+                    System.err.println("Error: Unspecified heap size"); // Specifies error and exits program
+                    runsCount = 2;
+                }
+            } catch (NumberFormatException e) {
+                System.err.println("Error: Invalid integer " + args[0]); // If integer is incorrectly formated exits program
+                runsCount = 2;
+            }
+            DistributeRuns DR = new DistributeRuns(runsCount);
             File outputFile = DR.distribute();
             BufferedReader reader = new BufferedReader(new FileReader(outputFile));
             String line;
@@ -17,6 +30,8 @@ public class MergeRuns {
             }
             reader.close();
             outputFile.delete();
+            long finish = System.currentTimeMillis();
+            System.err.println("Elapsed Time: " + ((finish - start)/1000) + " Seconds");
         } catch (Exception ex){
             System.err.println(ex);
         }
