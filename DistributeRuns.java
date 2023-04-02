@@ -25,7 +25,10 @@ public class DistributeRuns {
         kFiles = count > 1 ? count : 2;
     }
 
-    // Distribute the stream input into files and returns the final file
+    /**
+     * Distribute the stream input into files and 
+     * @return the final merged file
+     */
     public File distribute() {
         InputStreamReader isr = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(isr);
@@ -128,9 +131,9 @@ public class DistributeRuns {
     }
     
     /**
-     * Generates a random char string of "length" length used for file generation
-     * @param length
-     * @return
+     * Generates a random char string, used for file generation
+     * @param length size of the randomized string
+     * @return the randomized string
      */
     private static String generateRandomString(int length) {
         Random random = new Random();
@@ -142,7 +145,10 @@ public class DistributeRuns {
         return new String(text);
     }
 
-    // Create a temp file with a random name
+    /**
+     * Creates a temp file with a randomized name using generateRandomString()
+     * @return a created file
+     */
     public File createTemp() {
         try {
             File myObj = new File("temp" + generateRandomString(5) + ".txt");
@@ -155,7 +161,11 @@ public class DistributeRuns {
         return null;
     }
 
-    // Create a temp file with a random suffix and a predetermined prefix
+    /**
+     *  Creates a temp file with a specified prefix and a randomized suffix using generateRandomString()
+     * @param name Filename prefix
+     * @return a created File
+     */
     public File createTemp(String name) {
         try {
             String fileName = name + generateRandomString(5);
@@ -170,7 +180,11 @@ public class DistributeRuns {
         return null;
     }
 
-    // Return the next line for a reader
+    /**
+     * Reads the next line from a scanner
+     * @param reader the scanner to read from
+     * @return The line the scanner reads
+     */
     public static String readLine(Scanner reader) {
         try {
             return reader.nextLine();
@@ -179,7 +193,11 @@ public class DistributeRuns {
         }
     }
 
-    // Merge a list of files together
+    /**
+     * Merge all the files in a File List
+     * @param files a list of Files to merge
+     * @return A single merged file
+     */
     public File mergeFiles(List<File> files) {
         try {
             // Crate a heap with a maximum size of 31
