@@ -46,14 +46,14 @@ public class createRuns {
                     sortedOutput.insert(line);
                 }
             }
-            // String removed = "";
-            // while ((removed = sortedOutput.remove()) != null) {
-            //     writer.write(removed);
-            //     writer.newLine();
-            // }
-            // //System.out.print("||");
-            // writer.write("||");
-            // writer.newLine();
+            if (sortedOutput.getSize() > 0){
+                String removed = "";
+                    while ((removed = sortedOutput.remove()) != null) {
+                        //System.out.println(removed);
+                        writer.write(removed);
+                        writer.newLine();
+                    }
+            }
             writer.flush();
             writer.close();
             br.close();

@@ -46,7 +46,6 @@ public class DistributeRuns {
                             System.err.println("Merge files was null");
                             System.exit(-1);
                         }
-                        ;
                         files = new ArrayList<>();
                         files.add(mergedFile);
                         currentFile = mergedFile;
@@ -258,52 +257,52 @@ public class DistributeRuns {
         return null;
     }
 
-    public DistributeRuns(int input, String originalFolderPath, String targetFolderPath) {
-        this.originalFolder = new File(originalFolderPath);
-        this.targetFolderPath = targetFolderPath;
-        if (!originalFolder.exists()) {
-            System.err.println("Folder does not exist: " + originalFolderPath);
-        }
-        this.targetFolder = new File(targetFolderPath);
-        if (!targetFolder.exists()) {
-            System.err.println("Folder does not exist: " + targetFolderPath);
-        }
-        File[] fileCheck = originalFolder.listFiles();
-        if (fileCheck.length == 0) {
-            System.err.println("Folder is empty: " + originalFolderPath);
-            isEmpty = true;
-        } else {
-            isEmpty = false;
-        }
-        this.input = input;
-    }
+    // public DistributeRuns(int input, String originalFolderPath, String targetFolderPath) {
+    //     this.originalFolder = new File(originalFolderPath);
+    //     this.targetFolderPath = targetFolderPath;
+    //     if (!originalFolder.exists()) {
+    //         System.err.println("Folder does not exist: " + originalFolderPath);
+    //     }
+    //     this.targetFolder = new File(targetFolderPath);
+    //     if (!targetFolder.exists()) {
+    //         System.err.println("Folder does not exist: " + targetFolderPath);
+    //     }
+    //     File[] fileCheck = originalFolder.listFiles();
+    //     if (fileCheck.length == 0) {
+    //         System.err.println("Folder is empty: " + originalFolderPath);
+    //         isEmpty = true;
+    //     } else {
+    //         isEmpty = false;
+    //     }
+    //     this.input = input;
+    // }
 
-    // public void distribute (int input){
-    public void Distribute() {
+    // // public void distribute (int input){
+    // public void Distribute() {
 
-        if (input > 1) {
+    //     if (input > 1) {
 
-            // Get all the files in the original folder
-            File[] files = originalFolder.listFiles();
+    //         // Get all the files in the original folder
+    //         File[] files = originalFolder.listFiles();
 
-            // Move first file to the target folder if targer folder is empty
-            if (targetFolder.listFiles().length == 0 && files.length >= 2) {
-                files[1].renameTo(new File(targetFolder.getAbsolutePath() + files[1].separator + files[1].getName()));
-                System.err.println("-----     Moved: 1 " + files[1].getName());
-            }
+    //         // Move first file to the target folder if targer folder is empty
+    //         if (targetFolder.listFiles().length == 0 && files.length >= 2) {
+    //             files[1].renameTo(new File(targetFolder.getAbsolutePath() + files[1].separator + files[1].getName()));
+    //             System.err.println("-----     Moved: 1 " + files[1].getName());
+    //         }
 
-            if (files.length == 0) {
-                isEmpty = true;
-                return;
-            }
+    //         if (files.length == 0) {
+    //             isEmpty = true;
+    //             return;
+    //         }
 
-            // Move the second file to the target folder
-            System.err.println("-----     Moved: 0 " + files[0].getName());
-            files[0].renameTo(new File(targetFolder.getAbsolutePath() + files[0].separator + files[0].getName()));
-            return;
-        } else {
-            return;
-        }
-    }
+    //         // Move the second file to the target folder
+    //         System.err.println("-----     Moved: 0 " + files[0].getName());
+    //         files[0].renameTo(new File(targetFolder.getAbsolutePath() + files[0].separator + files[0].getName()));
+    //         return;
+    //     } else {
+    //         return;
+    //     }
+    // }
 
 }

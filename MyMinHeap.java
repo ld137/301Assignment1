@@ -28,6 +28,10 @@ public class MyMinHeap {
         size = 0;
     }
 
+    public int getSize(){
+        return size;
+    }
+
     private int parent(int pos) {
         return pos / 2;
     }
