@@ -19,14 +19,19 @@ public class DistributeRuns {
     File currentFile = null;
     int kFiles = 2;
 
-    // Make sure the inputted amount of runs are values are valid 
+    /**
+     * Specifies how many files are used when merging, 
+     * will default to 2 if input is less than 1 otherwise
+     * will use the specified value
+     * @param count The amount of files used to merge
+     */
     public DistributeRuns(int count) {
         System.err.println("Started Distribute Runs");
         kFiles = count > 1 ? count : 2;
     }
 
     /**
-     * Distribute the stream input into files and 
+     * Distribute the stream input into files
      * @return the final merged file
      */
     public File distribute() {

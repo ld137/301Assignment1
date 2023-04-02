@@ -8,7 +8,11 @@ import java.io.*;
 
 public class MergeRuns {
 
-
+    /**
+     * Specifies how many files are used, converts unsorted file into
+     * multiple smaller merged files specified in args.
+     * @param args This specifies the heap size, cannot be higher than 10
+     */
     public static void main(String[] args) {
         try {
             // Timer to check how long the program takes to run
@@ -45,9 +49,5 @@ public class MergeRuns {
             System.err.println(ex);
         }
         return;
-
     }
-
-    
-
 }
