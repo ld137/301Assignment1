@@ -11,7 +11,7 @@ public class MergeRuns {
     /**
      * Specifies how many files are used, converts unsorted file into
      * multiple smaller merged files specified in args.
-     * @param args This specifies the heap size, cannot be higher than 10
+     * @param args This specifies the heap size, cannot be higher than 10 and defaults to 2
      */
     public static void main(String[] args) {
         try {
