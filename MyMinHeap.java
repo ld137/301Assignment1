@@ -75,7 +75,6 @@ public class MyMinHeap {
      */
     public boolean insert(String value) {
         if (size >= maxsize) {
-            //System.err.println("Heap is full");
             return false;
         }
         size++;

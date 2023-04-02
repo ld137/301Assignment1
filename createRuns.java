@@ -1,3 +1,8 @@
+/*
+ * Lleyton Damon: 1585670
+ * Jake Postlewaight: 1590698
+ */
+
 import java.io.*;
 
 public class createRuns {
@@ -60,21 +65,6 @@ public class createRuns {
         } catch (Exception ex) {
             System.err.println(ex);
         }
-        // MyMinHeap initialHeap = new MyMinHeap(heapSize);
-        // MyMinHeap secondHeap = new MyMinHeap(heapSize);
-
-        // MyMinHeap sortedHeap = new MyMinHeap(heapSize * 2 - 1);
-
-        // while (!initialHeap.peek().isEmpty() || !secondHeap.peek().isEmpty()) {
-        //     if (initialHeap.peek().compareTo(secondHeap.peek()) < 0) {
-        //         // Initial heap value goes next
-        //         sortedHeap.insert(initialHeap.peek());
-        //         initialHeap.remove();
-        //     } else if (initialHeap.peek().compareTo(secondHeap.peek()) > 0) {
-        //         sortedHeap.insert(secondHeap.peek());
-        //         secondHeap.remove();
-        //     }
-        // }
 
     }
 }

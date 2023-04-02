@@ -1,3 +1,8 @@
+/*
+ * Lleyton Damon: 1585670
+ * Jake Postlewaight: 1590698
+ */
+
 import java.io.File;
 import java.io.*;
 import java.util.*;
@@ -42,7 +47,6 @@ public class DistributeRuns {
                     if (files.size() == kFiles) {
                         File mergedFile = mergeFiles(files);
                         if (mergedFile == null) {
-
                             System.err.println("Merge files was null");
                             System.exit(-1);
                         }
@@ -76,24 +80,48 @@ public class DistributeRuns {
         return null;
     }
 
+    /**
+     * 
+     * Writes the contents of a MyMinHeap object to a specified file.
+     * 
+     * @param file the File object representing the file to write to
+     * @param heap the MyMinHeap object containing the data to be written to the
+     *             file
+     */
     public void writeHeapToFile(File file, MyMinHeap heap) {
+        // Initialize a string variable to store the removed elements from the heap
         String removed = "";
+
+        // Loop through the heap and remove each element, writing it to the file
         while ((removed = heap.remove()) != null) {
+            // Write the removed element to the file using the writeLineToFile() method
             writeLineToFile(removed, file);
         }
     }
 
+    /**
+     * 
+     * Writes a single line of text to a specified file.
+     * @param line the String representing the line of text to be written to the
+     *             file
+     * @param file the File object representing the file to write to
+     */
     public static void writeLineToFile(String line, File file) {
         try {
+            // Create a FileWriter object to write to the specified file
             FileWriter myWriter = new FileWriter(file, true);
+            // Write the line of text to the file, followed by a line separator
             myWriter.write(line);
             myWriter.write(System.getProperty("line.separator"));
+
+            // Close the FileWriter object to save the changes to the file
             myWriter.close();
         } catch (Exception ex) {
+            // If an exception occurs, print the error message to the console
             System.err.println(ex);
         }
     }
-
+    
     private static String generateRandomString(int length) {
         Random random = new Random();
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -106,7 +134,7 @@ public class DistributeRuns {
 
     public File createTemp() {
         try {
-            File myObj = new File("Temp/" + "temp" + generateRandomString(5) + ".txt");
+            File myObj = new File("temp" + generateRandomString(5) + ".txt");
             if (myObj.createNewFile()) {
                 // System.err.println("File created: " + myObj.getName());
                 return myObj;
@@ -120,7 +148,7 @@ public class DistributeRuns {
         try {
             String fileName = name + generateRandomString(5);
             System.err.println("Creating File: " + fileName);
-            File myObj = new File("Temp/" + fileName + ".txt");
+            File myObj = new File(fileName + ".txt");
             if (myObj.createNewFile()) {
                 // System.err.println("File created: " + myObj.getName());
                 return myObj;
@@ -154,6 +182,7 @@ public class DistributeRuns {
                 lines.add(readLine(scan));
             }
 
+            // #region
             // File file1OBJ = files.get(0);
             // File file2OBJ = files.get(1);
             // System.err.println("Merging: " + file1OBJ.getName() + " and " +
@@ -162,6 +191,8 @@ public class DistributeRuns {
             // Scanner file2Reader = new Scanner(file2OBJ);
             // String line1 = readLine(file1Reader);
             // String line2 = readLine(file2Reader);
+            // #endregion
+
             boolean hasNonNull = lines.stream().anyMatch(Objects::nonNull);
             while (hasNonNull = lines.stream().anyMatch(Objects::nonNull)) {
 
@@ -171,11 +202,9 @@ public class DistributeRuns {
                 int index = 0;
                 int smallestIndex = 0;
                 for (String line : lines) {
-                    //System.err.println("Checking line: " + line);
                     if (line != null) {
                         if (line.compareTo(smallest) < 0 || smallest.isBlank()) {
                             smallest = line;
-                            //System.err.println("Current smallest is: " + smallest);
                             smallestIndex = index;
                         }
                     }
@@ -257,52 +286,55 @@ public class DistributeRuns {
         return null;
     }
 
-    // public DistributeRuns(int input, String originalFolderPath, String targetFolderPath) {
-    //     this.originalFolder = new File(originalFolderPath);
-    //     this.targetFolderPath = targetFolderPath;
-    //     if (!originalFolder.exists()) {
-    //         System.err.println("Folder does not exist: " + originalFolderPath);
-    //     }
-    //     this.targetFolder = new File(targetFolderPath);
-    //     if (!targetFolder.exists()) {
-    //         System.err.println("Folder does not exist: " + targetFolderPath);
-    //     }
-    //     File[] fileCheck = originalFolder.listFiles();
-    //     if (fileCheck.length == 0) {
-    //         System.err.println("Folder is empty: " + originalFolderPath);
-    //         isEmpty = true;
-    //     } else {
-    //         isEmpty = false;
-    //     }
-    //     this.input = input;
+    // public DistributeRuns(int input, String originalFolderPath, String
+    // targetFolderPath) {
+    // this.originalFolder = new File(originalFolderPath);
+    // this.targetFolderPath = targetFolderPath;
+    // if (!originalFolder.exists()) {
+    // System.err.println("Folder does not exist: " + originalFolderPath);
+    // }
+    // this.targetFolder = new File(targetFolderPath);
+    // if (!targetFolder.exists()) {
+    // System.err.println("Folder does not exist: " + targetFolderPath);
+    // }
+    // File[] fileCheck = originalFolder.listFiles();
+    // if (fileCheck.length == 0) {
+    // System.err.println("Folder is empty: " + originalFolderPath);
+    // isEmpty = true;
+    // } else {
+    // isEmpty = false;
+    // }
+    // this.input = input;
     // }
 
     // // public void distribute (int input){
     // public void Distribute() {
 
-    //     if (input > 1) {
+    // if (input > 1) {
 
-    //         // Get all the files in the original folder
-    //         File[] files = originalFolder.listFiles();
+    // // Get all the files in the original folder
+    // File[] files = originalFolder.listFiles();
 
-    //         // Move first file to the target folder if targer folder is empty
-    //         if (targetFolder.listFiles().length == 0 && files.length >= 2) {
-    //             files[1].renameTo(new File(targetFolder.getAbsolutePath() + files[1].separator + files[1].getName()));
-    //             System.err.println("-----     Moved: 1 " + files[1].getName());
-    //         }
+    // // Move first file to the target folder if targer folder is empty
+    // if (targetFolder.listFiles().length == 0 && files.length >= 2) {
+    // files[1].renameTo(new File(targetFolder.getAbsolutePath() +
+    // files[1].separator + files[1].getName()));
+    // System.err.println("----- Moved: 1 " + files[1].getName());
+    // }
 
-    //         if (files.length == 0) {
-    //             isEmpty = true;
-    //             return;
-    //         }
+    // if (files.length == 0) {
+    // isEmpty = true;
+    // return;
+    // }
 
-    //         // Move the second file to the target folder
-    //         System.err.println("-----     Moved: 0 " + files[0].getName());
-    //         files[0].renameTo(new File(targetFolder.getAbsolutePath() + files[0].separator + files[0].getName()));
-    //         return;
-    //     } else {
-    //         return;
-    //     }
+    // // Move the second file to the target folder
+    // System.err.println("----- Moved: 0 " + files[0].getName());
+    // files[0].renameTo(new File(targetFolder.getAbsolutePath() +
+    // files[0].separator + files[0].getName()));
+    // return;
+    // } else {
+    // return;
+    // }
     // }
 
 }
