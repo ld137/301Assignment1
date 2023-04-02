@@ -6,6 +6,12 @@
 import java.io.*;
 
 public class createRuns {
+
+    /**
+     * Reads in a file from the standard output and creates a sorted 
+     * list and outputs to the standard output
+     * @param args is the size of the list outputted to the standard output
+     */
     public static void main(String[] args) {
 
         InputStreamReader isr = new InputStreamReader(System.in);
