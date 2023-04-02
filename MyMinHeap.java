@@ -1,3 +1,8 @@
+/*
+ * Lleyton Damon: 1585670
+ * Jake Postlewaight: 1590698
+ */
+
 /**
  * MyMinHeap is a class for implementing a min-heap of Strings.
  * A min-heap is a binary tree where each node is smaller than its children.
