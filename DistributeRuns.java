@@ -8,6 +8,7 @@ import java.io.*;
 import java.util.*;
 import java.util.Scanner;
 
+// Distribute the stream input into files and returns the final file
 public class DistributeRuns {
     // Declare variables
     public File originalFolder;
