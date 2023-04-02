@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.Scanner;
 
 public class DistributeRuns {
-    // For some reason this is not working so for now I will hardcode it
+    // Declare variables
     public File originalFolder;
     public File targetFolder;
     public String targetFolderPath;
@@ -19,11 +19,13 @@ public class DistributeRuns {
     File currentFile = null;
     int kFiles = 2;
 
+    // Make sure the inputted amount of runs are values are valid 
     public DistributeRuns(int count) {
         System.err.println("Started Distribute Runs");
         kFiles = count > 1 ? count : 2;
     }
 
+      
     public File distribute() {
         InputStreamReader isr = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(isr);
@@ -33,6 +35,7 @@ public class DistributeRuns {
 
         int fileCount = 0;
         try {
+            // Read line until the end of file
             while ((line = br.readLine()) != null) {
                 // System.err.println(line);
                 if ((fileCount == 0)) {
@@ -44,7 +47,8 @@ public class DistributeRuns {
                 if (line.compareTo("||") == 0) {
                     // System.err.println("Got Split");
                     fileCount = 0;
-                    if (files.size() == kFiles) {
+                    
+                    if (files.size() == kFiles) { // If there are "k" files merge
                         File mergedFile = mergeFiles(files);
                         if (mergedFile == null) {
                             System.err.println("Merge files was null");
@@ -61,6 +65,7 @@ public class DistributeRuns {
                     }
                 }
             }
+            // If multiple files merge
             if (files.size() > 1) {
                 File mergedFile = mergeFiles(files);
                 if (mergedFile == null) {
@@ -122,6 +127,11 @@ public class DistributeRuns {
         }
     }
     
+    /**
+     * Generates a random char string of "length" length used for file generation
+     * @param length
+     * @return
+     */
     private static String generateRandomString(int length) {
         Random random = new Random();
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -132,6 +142,7 @@ public class DistributeRuns {
         return new String(text);
     }
 
+    // Create a temp file with a random name
     public File createTemp() {
         try {
             File myObj = new File("temp" + generateRandomString(5) + ".txt");
@@ -144,6 +155,7 @@ public class DistributeRuns {
         return null;
     }
 
+    // Create a temp file with a random suffix and a predetermined prefix
     public File createTemp(String name) {
         try {
             String fileName = name + generateRandomString(5);
@@ -158,6 +170,7 @@ public class DistributeRuns {
         return null;
     }
 
+    // Return the next line for a reader
     public static String readLine(Scanner reader) {
         try {
             return reader.nextLine();
@@ -166,13 +179,16 @@ public class DistributeRuns {
         }
     }
 
+    // Merge a list of files together
     public File mergeFiles(List<File> files) {
         try {
+            // Crate a heap with a maximum size of 31
             MyMinHeap mergeHeap = new MyMinHeap(31);
             File outputFile = createTemp("Merge");
 
             System.err.println("Merging " + files.size() + " files");
 
+            // Create a list of scanners and lines depending on the amount of files being merged
             List<Scanner> scanners = new ArrayList<>();
             List<String> lines = new ArrayList<>();
             for (File file : files) {
@@ -201,72 +217,25 @@ public class DistributeRuns {
                 String smallest = "";
                 int index = 0;
                 int smallestIndex = 0;
+                // Compare a single line from each file, the highest one's priority (alphabetical) and index is saved
                 for (String line : lines) {
                     if (line != null) {
                         if (line.compareTo(smallest) < 0 || smallest.isBlank()) {
-                            smallest = line;
+                            smallest = line; 
                             smallestIndex = index;
                         }
                     }
                     index++;
                 }
-                lines.set(smallestIndex, readLine(scanners.get(smallestIndex)));
-                Boolean inserted = mergeHeap.insert(smallest);
+                lines.set(smallestIndex, readLine(scanners.get(smallestIndex))); // The file with highest priority moves to it's next line
+                Boolean inserted = mergeHeap.insert(smallest); // Insert
                 if (!inserted) {
                     writeHeapToFile(outputFile, mergeHeap);
                     mergeHeap = new MyMinHeap(31);
                     mergeHeap.insert(smallest);
                 }
-
-                // if (line1 == null) {
-                // // just write line 2
-                // Boolean inserted = mergeHeap.insert(line2);
-                // if (!inserted) {
-                // // createFile(mergeHeap, outputFile, tmpFileFolder);
-                // writeHeapToFile(outputFile, mergeHeap);
-                // mergeHeap = new MyMinHeap(31);
-                // mergeHeap.insert(line2);
-                // }
-                // line2 = readLine(file2Reader);
-                // continue;
-                // }
-                // if (line2 == null) {
-                // // just write line 1
-                // Boolean inserted = mergeHeap.insert(line1);
-                // if (!inserted) {
-                // // createFile(mergeHeap, outputFile, tmpFileFolder);
-                // writeHeapToFile(outputFile, mergeHeap);
-                // mergeHeap = new MyMinHeap(31);
-                // mergeHeap.insert(line1);
-                // }
-                // line1 = readLine(file1Reader);
-                // continue;
-                // }
-                // if (line1.compareTo(line2) < 0) {
-                // // write line 1
-                // Boolean inserted = mergeHeap.insert(line1);
-                // if (!inserted) {
-                // // createFile(mergeHeap, outputFile, tmpFileFolder);
-                // writeHeapToFile(outputFile, mergeHeap);
-                // mergeHeap = new MyMinHeap(31);
-                // mergeHeap.insert(line1);
-                // }
-                // line1 = readLine(file1Reader);
-                // continue;
-                // } else {
-                // // write line 2
-                // Boolean inserted = mergeHeap.insert(line2);
-                // if (!inserted) {
-                // // createFile(mergeHeap, outputFile, tmpFileFolder);
-                // writeHeapToFile(outputFile, mergeHeap);
-                // mergeHeap = new MyMinHeap(31);
-                // mergeHeap.insert(line2);
-                // }
-                // line2 = readLine(file2Reader);
-                // continue;
-                // }
-
             }
+            // Write the heap to the output file
             writeHeapToFile(outputFile, mergeHeap);
             for (File file : files) {
                 String name = file.getName();
@@ -275,6 +244,7 @@ public class DistributeRuns {
                     System.err.println("Deleted: " + name);
             }
             return outputFile;
+            // Catch errors
         } catch (Exception ex) {
             StackTraceElement[] stackTrace = ex.getStackTrace();
             if (stackTrace.length > 0) {
@@ -285,56 +255,5 @@ public class DistributeRuns {
 
         return null;
     }
-
-    // public DistributeRuns(int input, String originalFolderPath, String
-    // targetFolderPath) {
-    // this.originalFolder = new File(originalFolderPath);
-    // this.targetFolderPath = targetFolderPath;
-    // if (!originalFolder.exists()) {
-    // System.err.println("Folder does not exist: " + originalFolderPath);
-    // }
-    // this.targetFolder = new File(targetFolderPath);
-    // if (!targetFolder.exists()) {
-    // System.err.println("Folder does not exist: " + targetFolderPath);
-    // }
-    // File[] fileCheck = originalFolder.listFiles();
-    // if (fileCheck.length == 0) {
-    // System.err.println("Folder is empty: " + originalFolderPath);
-    // isEmpty = true;
-    // } else {
-    // isEmpty = false;
-    // }
-    // this.input = input;
-    // }
-
-    // // public void distribute (int input){
-    // public void Distribute() {
-
-    // if (input > 1) {
-
-    // // Get all the files in the original folder
-    // File[] files = originalFolder.listFiles();
-
-    // // Move first file to the target folder if targer folder is empty
-    // if (targetFolder.listFiles().length == 0 && files.length >= 2) {
-    // files[1].renameTo(new File(targetFolder.getAbsolutePath() +
-    // files[1].separator + files[1].getName()));
-    // System.err.println("----- Moved: 1 " + files[1].getName());
-    // }
-
-    // if (files.length == 0) {
-    // isEmpty = true;
-    // return;
-    // }
-
-    // // Move the second file to the target folder
-    // System.err.println("----- Moved: 0 " + files[0].getName());
-    // files[0].renameTo(new File(targetFolder.getAbsolutePath() +
-    // files[0].separator + files[0].getName()));
-    // return;
-    // } else {
-    // return;
-    // }
-    // }
 
 }

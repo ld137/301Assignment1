@@ -34,7 +34,7 @@ public class createRuns {
         }
         try {
             System.err.println("Creating " + heapSize + " Sized runs");
-            MyMinHeap sortedOutput = new MyMinHeap(heapSize);
+            MyMinHeap sortedOutput = new MyMinHeap(heapSize); // Create a heap with inputted values
             while ((line = br.readLine()) != null) {
                 boolean inserted = sortedOutput.insert(line);
                 if (!inserted) {
@@ -59,7 +59,7 @@ public class createRuns {
                         writer.newLine();
                     }
             }
-            writer.flush();
+            writer.flush(); // Close reader and writer
             writer.close();
             br.close();
         } catch (Exception ex) {
