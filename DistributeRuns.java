@@ -19,10 +19,11 @@ public class DistributeRuns {
         kFiles = count > 1 ? count : 2;
     }
 
-    public File distribute(){
+    public File distribute() {
         InputStreamReader isr = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(isr);
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
+        // BufferedWriter writer = new BufferedWriter(new
+        // OutputStreamWriter(System.out));
         String line = "";
 
         int fileCount = 0;
@@ -38,28 +39,38 @@ public class DistributeRuns {
                 if (line.compareTo("||") == 0) {
                     // System.err.println("Got Split");
                     fileCount = 0;
-                    if (files.size() == 2) {
+                    if (files.size() == kFiles) {
                         File mergedFile = mergeFiles(files);
+                        if (mergedFile == null) {
+
+                            System.err.println("Merge files was null");
+                            System.exit(-1);
+                        }
+                        ;
                         files = new ArrayList<>();
                         files.add(mergedFile);
                         currentFile = mergedFile;
                     }
                     continue;
                 } else {
-                    if (!(line.isBlank())){
+                    if (!(line.isBlank())) {
                         writeLineToFile(line, currentFile);
                     }
                 }
             }
-            if (files.size() == kFiles){
+            if (files.size() > 1) {
                 File mergedFile = mergeFiles(files);
+                if (mergedFile == null) {
+                    System.err.println("Merge files was null");
+                    System.exit(-1);
+                }
                 files = new ArrayList<>();
                 files.add(mergedFile);
                 return mergedFile;
-            }else {
+            } else {
                 return files.get(0);
             }
-            
+
         } catch (Exception ex) {
             System.err.println(ex);
         }
@@ -96,7 +107,7 @@ public class DistributeRuns {
 
     public File createTemp() {
         try {
-            File myObj = new File("temp" + generateRandomString(5) + ".txt");
+            File myObj = new File("Temp/" + "temp" + generateRandomString(5) + ".txt");
             if (myObj.createNewFile()) {
                 // System.err.println("File created: " + myObj.getName());
                 return myObj;
@@ -110,7 +121,7 @@ public class DistributeRuns {
         try {
             String fileName = name + generateRandomString(5);
             System.err.println("Creating File: " + fileName);
-            File myObj = new File(fileName + ".txt");
+            File myObj = new File("Temp/" + fileName + ".txt");
             if (myObj.createNewFile()) {
                 // System.err.println("File created: " + myObj.getName());
                 return myObj;
@@ -132,103 +143,116 @@ public class DistributeRuns {
         try {
             MyMinHeap mergeHeap = new MyMinHeap(31);
             File outputFile = createTemp("Merge");
+
+            System.err.println("Merging " + files.size() + " files");
+
             List<Scanner> scanners = new ArrayList<>();
             List<String> lines = new ArrayList<>();
-            for(File file : files){
+            for (File file : files) {
                 scanners.add(new Scanner(file));
             }
-            for(Scanner scan : scanners){
+            for (Scanner scan : scanners) {
                 lines.add(readLine(scan));
             }
 
-
-            File file1OBJ = files.get(0);
-            File file2OBJ = files.get(1);
-            System.err.println("Merging: " + file1OBJ.getName() + " and " + file2OBJ.getName() + " into " + outputFile.getName());
-            Scanner file1Reader = new Scanner(file1OBJ);
-            Scanner file2Reader = new Scanner(file2OBJ);
-            String line1 = readLine(file1Reader);
-            String line2 = readLine(file2Reader);
+            // File file1OBJ = files.get(0);
+            // File file2OBJ = files.get(1);
+            // System.err.println("Merging: " + file1OBJ.getName() + " and " +
+            // file2OBJ.getName() + " into " + outputFile.getName());
+            // Scanner file1Reader = new Scanner(file1OBJ);
+            // Scanner file2Reader = new Scanner(file2OBJ);
+            // String line1 = readLine(file1Reader);
+            // String line2 = readLine(file2Reader);
             boolean hasNonNull = lines.stream().anyMatch(Objects::nonNull);
             while (hasNonNull = lines.stream().anyMatch(Objects::nonNull)) {
 
-                //Loop over lines array, while maintaining the index and the smallest line of said index
-                String smallest = null;
+                // Loop over lines array, while maintaining the index and the smallest line of
+                // said index
+                String smallest = "";
                 int index = 0;
-                for(String line : lines){
-                    if (line.compareTo(smallest) < 0 ){
-                        smallest = line;
+                int smallestIndex = 0;
+                for (String line : lines) {
+                    //System.err.println("Checking line: " + line);
+                    if (line != null) {
+                        if (line.compareTo(smallest) < 0 || smallest.isBlank()) {
+                            smallest = line;
+                            //System.err.println("Current smallest is: " + smallest);
+                            smallestIndex = index;
+                        }
                     }
                     index++;
                 }
-                lines.set(index, readLine(scanners.get(index)));
+                lines.set(smallestIndex, readLine(scanners.get(smallestIndex)));
                 Boolean inserted = mergeHeap.insert(smallest);
-                if (!inserted){
+                if (!inserted) {
                     writeHeapToFile(outputFile, mergeHeap);
                     mergeHeap = new MyMinHeap(31);
                     mergeHeap.insert(smallest);
                 }
-                
 
-
-                if (line1 == null) {
-                    // just write line 2
-                    Boolean inserted = mergeHeap.insert(line2);
-                    if (!inserted) {
-                        // createFile(mergeHeap, outputFile, tmpFileFolder);
-                        writeHeapToFile(outputFile, mergeHeap);
-                        mergeHeap = new MyMinHeap(31);
-                        mergeHeap.insert(line2);
-                    }
-                    line2 = readLine(file2Reader);
-                    continue;
-                }
-                if (line2 == null) {
-                    // just write line 1
-                    Boolean inserted = mergeHeap.insert(line1);
-                    if (!inserted) {
-                        // createFile(mergeHeap, outputFile, tmpFileFolder);
-                        writeHeapToFile(outputFile, mergeHeap);
-                        mergeHeap = new MyMinHeap(31);
-                        mergeHeap.insert(line1);
-                    }
-                    line1 = readLine(file1Reader);
-                    continue;
-                }
-                if (line1.compareTo(line2) < 0) {
-                    // write line 1
-                    Boolean inserted = mergeHeap.insert(line1);
-                    if (!inserted) {
-                        // createFile(mergeHeap, outputFile, tmpFileFolder);
-                        writeHeapToFile(outputFile, mergeHeap);
-                        mergeHeap = new MyMinHeap(31);
-                        mergeHeap.insert(line1);
-                    }
-                    line1 = readLine(file1Reader);
-                    continue;
-                } else {
-                    // write line 2
-                    Boolean inserted = mergeHeap.insert(line2);
-                    if (!inserted) {
-                        // createFile(mergeHeap, outputFile, tmpFileFolder);
-                        writeHeapToFile(outputFile, mergeHeap);
-                        mergeHeap = new MyMinHeap(31);
-                        mergeHeap.insert(line2);
-                    }
-                    line2 = readLine(file2Reader);
-                    continue;
-                }
+                // if (line1 == null) {
+                // // just write line 2
+                // Boolean inserted = mergeHeap.insert(line2);
+                // if (!inserted) {
+                // // createFile(mergeHeap, outputFile, tmpFileFolder);
+                // writeHeapToFile(outputFile, mergeHeap);
+                // mergeHeap = new MyMinHeap(31);
+                // mergeHeap.insert(line2);
+                // }
+                // line2 = readLine(file2Reader);
+                // continue;
+                // }
+                // if (line2 == null) {
+                // // just write line 1
+                // Boolean inserted = mergeHeap.insert(line1);
+                // if (!inserted) {
+                // // createFile(mergeHeap, outputFile, tmpFileFolder);
+                // writeHeapToFile(outputFile, mergeHeap);
+                // mergeHeap = new MyMinHeap(31);
+                // mergeHeap.insert(line1);
+                // }
+                // line1 = readLine(file1Reader);
+                // continue;
+                // }
+                // if (line1.compareTo(line2) < 0) {
+                // // write line 1
+                // Boolean inserted = mergeHeap.insert(line1);
+                // if (!inserted) {
+                // // createFile(mergeHeap, outputFile, tmpFileFolder);
+                // writeHeapToFile(outputFile, mergeHeap);
+                // mergeHeap = new MyMinHeap(31);
+                // mergeHeap.insert(line1);
+                // }
+                // line1 = readLine(file1Reader);
+                // continue;
+                // } else {
+                // // write line 2
+                // Boolean inserted = mergeHeap.insert(line2);
+                // if (!inserted) {
+                // // createFile(mergeHeap, outputFile, tmpFileFolder);
+                // writeHeapToFile(outputFile, mergeHeap);
+                // mergeHeap = new MyMinHeap(31);
+                // mergeHeap.insert(line2);
+                // }
+                // line2 = readLine(file2Reader);
+                // continue;
+                // }
 
             }
             writeHeapToFile(outputFile, mergeHeap);
             for (File file : files) {
+                String name = file.getName();
                 boolean isDeleted = file.delete();
-                //if (isDeleted)
-                    //System.err.println("Deleted Temp File");
+                if (isDeleted)
+                    System.err.println("Deleted: " + name);
             }
             return outputFile;
         } catch (Exception ex) {
-
+            StackTraceElement[] stackTrace = ex.getStackTrace();
+            if (stackTrace.length > 0) {
+                int lineNumber = stackTrace[0].getLineNumber();
+                System.err.println("Exception thrown on line " + lineNumber);
+            }
         }
 
         return null;
